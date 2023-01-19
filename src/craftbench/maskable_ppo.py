@@ -16,7 +16,7 @@ from craftbench.plots import save_requirement_graph, save_heb_graph
 
 from craftbench.make_env import make_env, record_wrap_env
 
-PROJECT = "crafting-benchmark"
+PROJECT = "crafting-benchmark-neuralnetwork-size-sweep"
 
 DEFAULT_CONFIG = {
     "agent": "MaskablePPO",
@@ -41,12 +41,47 @@ DEFAULT_CONFIG = {
     "n_zones": 1,
 }
 
+# Define sweep config
+sweep_configuration = {
+    'method': 'grid',
+    'name': PROJECT, 
+    'metric': {'goal': 'maximize', 'name': 'mean_ep_return'}, 
+    'parameters': 
+    {   
+        'pi_n_layers': {'values': [1, 2, 3, 4, 5, 6, 7, 8]}, 
+        'pi_units_per_layer': {'values': [4, 8, 16, 32, 64, 128, 256]}, 
+        'vf_n_layers': {'values': [1, 2, 3, 4, 5, 6, 7, 8]}, 
+        'vf_units_per_layer': {'values': [4, 8, 16, 32, 64, 128, 256]}, 
+        'agent': {'value': 'MaskablePPO'}, 
+        'agent_seed': {'value': 0}, 
+        'policy_type': {'value': 'MlpPolicy'}, 
+        'total_timesteps': {'value': 1e6}, 
+        'max_n_consecutive_successes': {'value': 200}, 
+        'env_name': {'value': 'RandomCrafting-v1'}, 
+        'env_seed': {'value': 1}, 
+        'task_seed': {'value': None}, 
+        'task_complexity': {'value': 243}, 
+        'reward_shaping': {'value': RewardShaping.ALL_USEFUL.value},
+        'max_episode_steps': {'value': 200},
+        'time_factor': {'value': 2.0}, 
+        'n_items': {'value': 20}, 
+        'n_tools': {'value': 0}, 
+        'n_findables': {'value': 1}, 
+        'n_zones': {'value': 1}
+    }
+}
+
+
+# Temporary solution for pygame "No available video device"
+import os
+os.environ['SDL_VIDEODRIVER'] = 'dummy'
 
 def benchmark_mskppo(
     save_req_graph: bool = False,
     save_sol_graph: bool = False,
 ):
-    run = wandb.init(project=PROJECT, config=DEFAULT_CONFIG, monitor_gym=True)
+    run = wandb.init(project=PROJECT, monitor_gym=True)
+    print(wandb.config)
     timestamp = time.strftime("%Y%m%d_%H%M%S")
     run_dirname = f"{timestamp}-{run.id}"
     config = wandb.config
@@ -125,4 +160,10 @@ def benchmark_mskppo(
 
 
 if __name__ == "__main__":
-    benchmark_mskppo()
+    # benchmark_mskppo()
+
+    # Initialize sweep by passing in config.
+    # sweep_id = wandb.sweep(sweep=sweep_configuration, project=PROJECT)
+    # print(sweep_id)
+
+    wandb.agent("9vtnubgf", function=benchmark_mskppo, count=1)

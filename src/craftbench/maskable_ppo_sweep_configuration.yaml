@@ -1,0 +1,48 @@
+# config.yaml
+program: maskable_ppo.py
+method: grid
+name: neural_network_size_sweep
+metric:
+  goal: maximize
+  name: mean_ep_return
+parameters:
+  pi_n_layers: 
+    values: [1, 2, 3, 4, 5, 6, 7, 8]
+  pi_units_per_layer:
+    values: [4, 8, 16, 32, 64, 128, 256]
+  vf_n_layers:
+    values: [1, 2, 3, 4, 5, 6, 7, 8]
+  vf_units_per_layer:
+    values: [4, 8, 16, 32, 64, 128, 256]
+  agent: 
+    value: "MaskablePPO"
+  agent_seed: 
+    value: 0
+  policy_type: 
+    value: "MlpPolicy"
+  total_timesteps:
+    value: 1e6
+  max_n_consecutive_successes:
+    value: 200
+  env_name: 
+    value: "RandomCrafting-v1"
+  env_seed: 
+    value: 1
+  task_seed:
+    value: None
+  task_complexity:
+    value: 243
+  reward_shaping:
+    value: RewardShaping.ALL_USEFUL.value
+  max_episode_steps:
+    value: 200
+  time_factor:
+    value: 2.0
+  n_items:
+    value: 20
+  n_tools:
+    value: 0
+  n_findables:
+    value: 1
+  n_zones:
+    value: 1
