@@ -159,7 +159,7 @@ def benchmark_mskppo(
     run.finish()
 
 def start_wandb_agent():
-    wandb.agent("9vtnubgf", function=benchmark_mskppo, count=1, project=PROJECT)
+    wandb.agent("ny7b5y0x", function=benchmark_mskppo, count=1, project=PROJECT)
 
 if __name__ == "__main__":
     # benchmark_mskppo()
