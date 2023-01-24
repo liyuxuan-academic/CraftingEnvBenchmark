@@ -2,9 +2,12 @@ Bootstrap: docker
 From: ubuntu:20.04
 
 # Notes: when run the container, remember "--contain --bind /etc:/etc"
+# "--contain" will create a minimal level binding to your host machine. This is to avoid potential environment conflicts.
+# "--bind /etc:/etc" gives pki access to wandb.
+# REMEBER TO ADD YOUR WANDB API KEY BELOW!
 
 %environment
-
+    export WANDB_API_KEY="<INSERT YOUR KEY HERE>"
     export PYTHONPATH="${PYTHONPATH}:/HEB_graphs"
     export PYTHONPATH="${PYTHONPATH}:/CraftingEnvBenchmark/src"
 
@@ -42,6 +45,5 @@ From: ubuntu:20.04
     
 %runscript
     exec echo "Start!"
-    exec wandb offline
     exec python3 /CraftingEnvBenchmark/src/craftbench/maskable_ppo.py
     exec echo "End!"
