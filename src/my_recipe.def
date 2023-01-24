@@ -1,11 +1,12 @@
 Bootstrap: docker
-From: ubuntu:18.04
+From: ubuntu:20.04
 
+# Notes: when run the container, remember "--contain --bind /etc:/etc"
 
 %environment
 
-    # export PATH=/usr/test:$PATH
-
+    export PYTHONPATH="${PYTHONPATH}:/HEB_graphs"
+    export PYTHONPATH="${PYTHONPATH}:/CraftingEnvBenchmark/src"
 
 %labels
 
@@ -14,7 +15,9 @@ From: ubuntu:18.04
 
 %post
 
-    apt-get update && apt-get -y install python3 git wget python3-pip
+    apt-get update && apt-get -y install git wget python3 python3-pip
+
+    #SSH Keys
     mkdir /root/.ssh/
     touch /root/.ssh/known_hosts
     ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa
@@ -22,17 +25,23 @@ From: ubuntu:18.04
     cat /root/.ssh/id_rsa
     ssh-keyscan github.com >> /root/.ssh/known_hosts
     chmod 0600 /root/.ssh/*
+    
+
+    # Clone repos 
     git clone https://github.com/liyuxuan-academic/CraftingEnvBenchmark.git
-    cd CraftingEnvBenchmark && pip3 install -e .
-    pip3 install gym==0.21
-    ls /
-    ls /CraftingEnvBenchmark
-    ls /CraftingEnvBenchmark/src
+    git clone https://github.com/IRLL/HEB_graphs.git
+    cd HEB_graphs && pip3 install -r requirements.txt 
+    cd ../CraftingEnvBenchmark && pip3 install -r requirements.txt
+
+    # For version compatability 
+    cd .. && pip3 install gym==0.21
 
 
     
     
     
 %runscript
-    exec echo "Test singularity recipe!"
-    exec python3 
+    exec echo "Start!"
+    exec wandb offline
+    exec python3 /CraftingEnvBenchmark/src/craftbench/maskable_ppo.py
+    exec echo "End!"

@@ -158,6 +158,8 @@ def benchmark_mskppo(
 
     run.finish()
 
+def start_wandb_agent():
+    wandb.agent("9vtnubgf", function=benchmark_mskppo, count=1)
 
 if __name__ == "__main__":
     # benchmark_mskppo()
@@ -166,4 +168,4 @@ if __name__ == "__main__":
     # sweep_id = wandb.sweep(sweep=sweep_configuration, project=PROJECT)
     # print(sweep_id)
 
-    wandb.agent("9vtnubgf", function=benchmark_mskppo, count=1)
+    start_wandb_agent()

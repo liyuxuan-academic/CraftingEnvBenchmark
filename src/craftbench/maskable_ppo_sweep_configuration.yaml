@@ -33,7 +33,7 @@ parameters:
   task_complexity:
     value: 243
   reward_shaping:
-    value: RewardShaping.ALL_USEFUL.value
+    value: 2
   max_episode_steps:
     value: 200
   time_factor:

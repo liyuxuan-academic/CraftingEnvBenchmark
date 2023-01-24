@@ -3,6 +3,3 @@
 #SBATCH --mem-per-cpu=16GB
 #SBATCH --array=0-32
 
-wandb offline
-python ~/CraftingEnvBenchmark/src/craftbench/maskable_ppo.py
-deactivate
