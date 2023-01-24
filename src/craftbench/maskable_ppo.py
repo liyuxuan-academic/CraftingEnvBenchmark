@@ -16,7 +16,7 @@ from craftbench.plots import save_requirement_graph, save_heb_graph
 
 from craftbench.make_env import make_env, record_wrap_env
 
-PROJECT = "crafting-benchmark-neuralnetwork-size-sweep"
+PROJECT = "neural_network_size_sweep"
 
 DEFAULT_CONFIG = {
     "agent": "MaskablePPO",
@@ -159,7 +159,7 @@ def benchmark_mskppo(
     run.finish()
 
 def start_wandb_agent():
-    wandb.agent("9vtnubgf", function=benchmark_mskppo, count=1)
+    wandb.agent("9vtnubgf", function=benchmark_mskppo, count=1, project=PROJECT)
 
 if __name__ == "__main__":
     # benchmark_mskppo()
